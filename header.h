@@ -6,18 +6,24 @@
 #include <stdint.h>
 #include <unistd.h>
 
+extern const int t_len;
+
 typedef struct radiotap_header {
     u_int8_t version; //set to 0
     u_int8_t pad;
     u_int16_t len;
+
     //Present_flags present_flags;
     u_int32_t present_flags;
+
     //Mac timestampe
     u_int8_t mac_timestamp[8];
+
     //Flags flags;
     u_int8_t flags;
-    //u_int8_t data_rate;
+
     u_int16_t c_frequency;
+
     //Channel_flags channel_flags;
     u_int16_t channel_flags;
     u_int8_t ant_signal;
@@ -37,7 +43,7 @@ typedef struct Tagged_para{
     //SSID para
     u_int8_t para_set;
     u_int8_t stag_len;
-    u_int8_t name[5]; //same with length
+    u_int8_t name;//same with length
 
     //Channel para
     u_int8_t ds_para;
@@ -49,6 +55,7 @@ typedef struct Tagged_para{
     u_int8_t rtag_len;
     u_int8_t rate[3];
 }tagged_para;
+
 
 typedef struct Dot11{
     //802.11 Beacon frame

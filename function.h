@@ -1,5 +1,4 @@
 #include "header.h"
-
 /*void flag_assign(radiotap_header* r) { // for beacon frame
 
 //present_flags set
@@ -19,8 +18,15 @@
     r->channel_flags.two_ghz = 1;
  }*/
 
+void insert (char *m, char *s, int n, int size) {
 
-void make_beacon_packet(u_char* beacon_packet){
+    for(int i = 1; i<=size-n-strlen(s); i++)
+        m[size-i] = m[size-strlen(s)-i];
+
+    memmove(m+n, s, strlen(s));
+}
+
+void make_beacon_packet(u_char* beacon_packet, char* title){
 
     radiotap_header r_header;
 
@@ -62,13 +68,9 @@ void make_beacon_packet(u_char* beacon_packet){
     //SSID para
     memset(dot11.fixed_para, 0,sizeof(dot11.fixed_para));
     dot11.tag.para_set = 0;
-    dot11.tag.stag_len = 5;
+    dot11.tag.stag_len = strlen(title) + 1; //space
     //SSID name
-    dot11.tag.name[0] = 0x31;
-    dot11.tag.name[1] = 0x32;
-    dot11.tag.name[2] = 0x33;
-    dot11.tag.name[3] = 0x34;
-    dot11.tag.name[4] = 0x35;
+    dot11.tag.name = ' ';
 
     //Channel para
     dot11.tag.ds_para = 3;
@@ -83,5 +85,4 @@ void make_beacon_packet(u_char* beacon_packet){
     dot11.tag.rate[2] = 0x96;
 
     memcpy(beacon_packet + sizeof(r_header)-2, &dot11, sizeof(dot11));
-
 }
